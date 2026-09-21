@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">TitanTrack</string>
+
+    <!-- Strings para el login -->
+    <string name="login_title">TitanTrack</string>
+    <string name="login_subtitle">Gestión Fitness</string>
+    <string name="hint_email">Correo electrónico</string>
+    <string name="hint_password">Contraseña</string>
+    <string name="btn_login">Iniciar sesión</string>
+    <string name="prompt_no_account">¿No tiene cuenta?Regístrese aquí</string>
+
+    <!-- Strings del Registro -->
+    <string name="register_title">Alta de Usuario</string>
+    <string name="register_subtitle">Crea tu perfil de entrenamiento</string>
+    <string name="hint_full_name">Nombre completo</string>
+    <string name="hint_confirm_password">Confirmar contraseña</string>
+    <string name="btn_register">Crear cuenta</string>
+    <string name="prompt_have_account">¿Ya tiene cuenta? Inicia sesión</string>
 </resources>

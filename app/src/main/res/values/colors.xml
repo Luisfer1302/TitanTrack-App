@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="brand_primary">#FF6B00</color> <!-- Naranja-->
+    <color name="brand_accent">#FF8A00</color> <!-- Naranja claro -->
+    <color name="brand_background">#0E0F12</color> <!-- Negro para el fondo -->
+    <color name="brand_surface">#181A20</color> <!-- Fondo oscuro campos -->
+    <color name="brand_text_primary">#FFFFFF</color> <!-- Negro para texto primario -->
+    <color name="brand_text_secondary">#94A3B8</color> <!-- Gris para texto secundario/hints -->
 </resources>

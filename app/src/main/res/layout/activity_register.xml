@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/brand_background"
+    android:padding="24dp">
+
+    <!-- Registro -->
+<TextView
+    android:id="@+id/tvRegTitle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/register_title"
+    android:textColor="@color/brand_accent"
+    android:textSize="28sp"
+    android:textStyle="bold"
+    app:layout_constraintBottom_toTopOf="@+id/tvRegSubtitle"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_chainStyle="packed" />
+
+<TextView
+    android:id="@id/tvRegSubtitle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="6dp"
+    android:text="@string/register_subtitle"
+    android:textColor="@color/brand_text_secondary"
+    android:textSize="14sp"
+    app:layout_constraintBottom_toTopOf="@+id/tilRegName"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/tvRegTitle" />
+
+    <!-- Nombre Completo -->
+<com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/tilRegName"
+    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="24dp"
+    android:hint="@string/hint_full_name"
+    android:textColorHint="@color/brand_text_secondary"
+    app:boxBackgroundColor="@color/brand_surface"
+    app:layout_constraintBottom_toTopOf="@+id/tilRegEmail"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/tvRegSubtitle">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etRegName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:textColor="@color/brand_text_primary" />
+
+</com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Correo -->
+<com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/tilRegEmail"
+    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp"
+    android:hint="@string/hint_email"
+    android:textColorHint="@color/brand_text_secondary"
+    app:boxBackgroundColor="@color/brand_surface"
+    app:layout_constraintBottom_toTopOf="@+id/tilRegPassword"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/tilRegName" >
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etRegEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:textColor="@color/brand_text_primary" />
+
+</com.google.android.material.textfield.TextInputLayout>
+
+
+    <!-- Contraseña -->
+<com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/tilRegPassword"
+    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp"
+    android:hint="@string/hint_password"
+    android:textColorHint="@color/brand_text_secondary"
+    app:boxBackgroundColor="@color/brand_surface"
+    app:endIconMode="password_toggle"
+    app:layout_constraintBottom_toTopOf="@+id/tilRegConfirmPassword"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/tilRegEmail">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etRegPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:textColor="@color/brand_text_primary" />
+
+</com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Confirmación de contraseña -->
+<com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/tilRegConfirmPassword"
+    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp"
+    android:hint="@string/hint_confirm_password"
+    android:textColorHint="@color/brand_text_secondary"
+    app:boxBackgroundColor="@color/brand_surface"
+    app:endIconMode="password_toggle"
+    app:layout_constraintBottom_toTopOf="@+id/btnRegister"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/tilRegPassword">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etRegConfirmPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:textColor="@color/brand_text_primary" />
+
+</com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Registro -->
+<com.google.android.material.button.MaterialButton
+    android:id="@+id/btnRegister"
+    android:layout_width="0dp"
+    android:layout_height="56dp"
+    android:layout_marginTop="20dp"
+    android:backgroundTint="@color/brand_accent"
+    android:text="@string/btn_register"
+    android:textColorHint="@color/brand_text_secondary"
+    android:textSize="16sp"
+    app:cornerRadius="8dp"
+    app:layout_constraintBottom_toTopOf="@+id/tvGoToLogin"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/tilRegConfirmPassword" />
+
+    <!-- Login -->
+<TextView
+    android:id="@+id/tvGoToLogin"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp"
+    android:padding="8dp"
+    android:text="@string/prompt_have_account"
+    android:textColor="@color/brand_primary"
+    android:textSize="14sp"
+    android:textStyle="bold"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/btnRegister" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
