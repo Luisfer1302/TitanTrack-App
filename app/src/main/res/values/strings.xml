@@ -26,4 +26,11 @@
     <string name="section_home">Sección: Panel de inicio</string>
     <string name="section_workouts">Sección: Rutinas y Ejercicios</string>
     <string name="section_profile">Sección: Perfil de Usuario</string>
+
+    <!-- Validaciones -->
+    <string name="error_empty_email">El campo correo debe estar relleno</string>
+    <string name="error_invalid_email">Introduce un correo electrónico válido</string>
+    <string name="error_empty_password">El campo contraseña no puede estar vacío</string>
+    <string name="error_short_password">La contraseña debe tener al menos 6 caracteres</string>
+
 </resources>

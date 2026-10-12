@@ -1,5 +1,8 @@
 package com.titantrack.activities;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,40 +34,48 @@ public class DashboardActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
         rvExercises = findViewById(R.id.rvExercises);
 
-        // 1. Configurar RecyclerView con LayoutManager vertical
         rvExercises.setLayoutManager(new LinearLayoutManager(this));
-
-        // 2. Poblar lista con datos simulados (Mock Data)
         initMockData();
-
-        // 3. Vincular Adaptador
         exerciseAdapter = new ExerciseAdapter(exerciseList);
         rvExercises.setAdapter(exerciseAdapter);
 
-        // 4. Control del BottomNavigationView con visibilidad dinámica
+        SharedPreferences prefs = getSharedPreferences(MainActivity.PREFS_NAME, Context.MODE_PRIVATE);
+        String userEmail = prefs.getString(MainActivity.KEY_USER_EMAIL, "Usuario");
+
         bottomNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemId = item.getItemId();
                 if (itemId == R.id.nav_home) {
-                    tvSectionContent.setText(R.string.section_home);
+                    tvSectionContent.setText(getString(R.string.section_home));
                     rvExercises.setVisibility(View.GONE);
                     return true;
                 } else if (itemId == R.id.nav_workouts) {
-                    tvSectionContent.setText(R.string.section_workouts);
+                    tvSectionContent.setText(getString(R.string.section_workouts));
                     rvExercises.setVisibility(View.VISIBLE);
                     return true;
                 } else if (itemId == R.id.nav_profile) {
-                    tvSectionContent.setText(R.string.section_profile);
+                    tvSectionContent.setText("Sesión iniciada como:\n" + userEmail + "\n\n(Pulsa aquí para Cerrar Sesión)");
                     rvExercises.setVisibility(View.GONE);
+
+                    // Pulsar texto para poder cerrar sesión
+                    tvSectionContent.setOnClickListener(v -> logout());
                     return true;
                 }
                 return false;
             }
         });
 
-        // Estado inicial en la sección de Rutinas
         bottomNav.setSelectedItemId(R.id.nav_workouts);
+    }
+
+    private void logout() {
+        SharedPreferences prefs = getSharedPreferences(MainActivity.PREFS_NAME, Context.MODE_PRIVATE);
+        prefs.edit().clear().apply();
+
+        Intent intent = new Intent(DashboardActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void initMockData() {
