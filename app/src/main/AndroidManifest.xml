@@ -29,6 +29,7 @@
         <activity
             android:name=".activities.DashboardActivity"
             android:exported="false" />
+        <activity android:name=".activities.TrainingActivity" />
     </application>
 
 </manifest>

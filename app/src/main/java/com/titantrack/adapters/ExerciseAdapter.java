@@ -33,6 +33,12 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
         holder.tvMuscleGroup.setText("Grupo: " + exercise.getMuscleGroup());
         holder.tvSetsReps.setText("Objetivo: " + exercise.getSetsReps());
         holder.tvExerciseDifficulty.setText(exercise.getDifficulty());
+
+        holder.itemView.setOnClickListener(v -> {
+            android.content.Intent intent = new android.content.Intent(v.getContext(), com.titantrack.activities.TrainingActivity.class);
+            intent.putExtra("EXERCISE_NAME", exercise.getName());
+            v.getContext().startActivity(intent);
+        });
     }
 
     @Override
