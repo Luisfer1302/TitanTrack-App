@@ -33,7 +33,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDashboardTitle" />
 
-    <!-- Catálogo Dinámico -->
+    <!-- Botón historial (ahora anclado DEBAJO del indicador de sección) -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnViewHistory"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="10dp"
+        android:text="Ver Historial de Entrenamientos"
+        app:strokeColor="@color/brand_primary"
+        android:textColor="@color/brand_primary"
+        app:layout_constraintTop_toBottomOf="@+id/tvSectionContent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Catálogo Dinámico (ahora anclado DEBAJO del botón historial) -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvExercises"
         android:layout_width="0dp"
@@ -44,7 +59,7 @@
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvSectionContent" />
+        app:layout_constraintTop_toBottomOf="@+id/btnViewHistory" />
 
     <!-- Menú inferior -->
     <com.google.android.material.bottomnavigation.BottomNavigationView

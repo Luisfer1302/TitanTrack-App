@@ -19,7 +19,7 @@ public class TrainingActivity extends AppCompatActivity {
 
     private TextInputEditText etWeight, etReps;
     private TextView tvTimer, tvExerciseNameDisplay, tvRestIndicator;
-    private MaterialButton btnRegisterSet;
+    private MaterialButton btnRegisterSet, btnFinishWorkout;
 
     // Cambiado a RecyclerView por el feedback
     private RecyclerView rvSessionLog;
@@ -47,6 +47,12 @@ public class TrainingActivity extends AppCompatActivity {
         tvRestIndicator = findViewById(R.id.tvRestIndicator);
         btnRegisterSet = findViewById(R.id.btnRegisterSet);
         rvSessionLog = findViewById(R.id.rvSessionLog);
+
+        // --- BOTONES ---
+        btnRegisterSet = findViewById(R.id.btnRegisterSet);
+
+        btnFinishWorkout = findViewById(R.id.btnFinishWorkout);
+        btnFinishWorkout.setOnClickListener(v -> saveWorkoutToDatabase());
 
         // Cargar el nombre del ejercicio si venimos del Adapter del catálogo
         String exerciseName = getIntent().getStringExtra("EXERCISE_NAME");
@@ -130,6 +136,28 @@ public class TrainingActivity extends AppCompatActivity {
                 Toast.makeText(TrainingActivity.this, "¡A por la siguiente serie!", Toast.LENGTH_SHORT).show();
             }
         }.start();
+    }
+
+    private void saveWorkoutToDatabase() {
+        // Si le dan a guardar sin haber hecho ni una serie, avisamos
+        if (sessionData.isEmpty()) {
+            Toast.makeText(this, "No hay series registradas", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Preparamos los datos que vamos a guardar
+        String exerciseName = tvExerciseNameDisplay.getText().toString();
+        String summary = "Completadas " + sessionData.size() + " series.";
+        String currentDate = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm", java.util.Locale.getDefault()).format(new java.util.Date());
+
+        // Llamamos a tu clase DatabaseHelper y ejecutamos el INSERT
+        com.titantrack.db.DatabaseHelper db = new com.titantrack.db.DatabaseHelper(this);
+        db.insertWorkout(exerciseName, summary, currentDate);
+
+        Toast.makeText(this, "Entrenamiento guardado en disco", Toast.LENGTH_LONG).show();
+
+        // Cerramos la pantalla de entrenamiento para volver al Dashboard
+        finish();
     }
 
     @Override

@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.button.MaterialButton; // Añadida la importación del botón
 import com.google.android.material.navigation.NavigationBarView;
 import com.titantrack.R;
 import com.titantrack.adapters.ExerciseAdapter;
@@ -34,6 +35,14 @@ public class DashboardActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
         rvExercises = findViewById(R.id.rvExercises);
 
+        // --- INICIO CÓDIGO NUEVO (Botón de Historial) ---
+        MaterialButton btnViewHistory = findViewById(R.id.btnViewHistory);
+        btnViewHistory.setOnClickListener(v -> {
+            Intent intent = new Intent(DashboardActivity.this, HistoryActivity.class);
+            startActivity(intent);
+        });
+        // --- FIN CÓDIGO NUEVO ---
+
         rvExercises.setLayoutManager(new LinearLayoutManager(this));
         initMockData();
         exerciseAdapter = new ExerciseAdapter(exerciseList);
@@ -49,14 +58,17 @@ public class DashboardActivity extends AppCompatActivity {
                 if (itemId == R.id.nav_home) {
                     tvSectionContent.setText(getString(R.string.section_home));
                     rvExercises.setVisibility(View.GONE);
+                    btnViewHistory.setVisibility(View.GONE); // Ocultar el botón si no estamos en workouts
                     return true;
                 } else if (itemId == R.id.nav_workouts) {
                     tvSectionContent.setText(getString(R.string.section_workouts));
                     rvExercises.setVisibility(View.VISIBLE);
+                    btnViewHistory.setVisibility(View.VISIBLE); // Mostrar el botón en la pestaña de workouts
                     return true;
                 } else if (itemId == R.id.nav_profile) {
                     tvSectionContent.setText("Sesión iniciada como:\n" + userEmail + "\n\n(Pulsa aquí para Cerrar Sesión)");
                     rvExercises.setVisibility(View.GONE);
+                    btnViewHistory.setVisibility(View.GONE); // Ocultar el botón
 
                     // Pulsar texto para poder cerrar sesión
                     tvSectionContent.setOnClickListener(v -> logout());
