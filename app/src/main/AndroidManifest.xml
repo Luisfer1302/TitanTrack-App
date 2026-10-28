@@ -30,6 +30,7 @@
             android:name=".activities.DashboardActivity"
             android:exported="false" />
         <activity android:name=".activities.TrainingActivity" />
+        <activity android:name=".activities.HistoryActivity" />
     </application>
 
 </manifest>

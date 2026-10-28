@@ -6,23 +6,30 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.titantrack.R;
+import com.titantrack.adapters.WorkoutSetAdapter;
 import com.titantrack.models.WorkoutSet;
 import java.util.ArrayList;
 
 public class TrainingActivity extends AppCompatActivity {
 
     private TextInputEditText etWeight, etReps;
-    private TextView tvTimer, tvSessionLog, tvExerciseNameDisplay, tvRestIndicator;
+    private TextView tvTimer, tvExerciseNameDisplay, tvRestIndicator;
     private MaterialButton btnRegisterSet;
 
-    // Estructura para el registro temporal
+    // Cambiado a RecyclerView por el feedback
+    private RecyclerView rvSessionLog;
+    private WorkoutSetAdapter setAdapter;
+
+    // Estructura en memoria temporal
     private ArrayList<WorkoutSet> sessionData;
     private CountDownTimer restTimer;
 
-    // Configuración de descanso
+    // 60 segundos de descanso
     private final long REST_TIME_MS = 60000;
 
     @Override
@@ -30,89 +37,97 @@ public class TrainingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_training);
 
-        // Inicializar la estructura en memoria
         sessionData = new ArrayList<>();
 
-        // Vincular Vistas
+        // Vincular las vistas de la UI
         etWeight = findViewById(R.id.etWeight);
         etReps = findViewById(R.id.etReps);
         tvTimer = findViewById(R.id.tvTimer);
-        tvSessionLog = findViewById(R.id.tvSessionLog);
         tvExerciseNameDisplay = findViewById(R.id.tvExerciseNameDisplay);
         tvRestIndicator = findViewById(R.id.tvRestIndicator);
         btnRegisterSet = findViewById(R.id.btnRegisterSet);
+        rvSessionLog = findViewById(R.id.rvSessionLog);
 
-        // Recuperar el nombre del ejercicio
+        // Cargar el nombre del ejercicio si venimos del Adapter del catálogo
         String exerciseName = getIntent().getStringExtra("EXERCISE_NAME");
         if (exerciseName != null) {
             tvExerciseNameDisplay.setText(exerciseName);
         }
 
+        // Configurar el RecyclerView con el nuevo Adapter de tarjetas
+        rvSessionLog.setLayoutManager(new LinearLayoutManager(this));
+        setAdapter = new WorkoutSetAdapter(sessionData);
+        rvSessionLog.setAdapter(setAdapter);
+
+        // Acción principal
         btnRegisterSet.setOnClickListener(v -> registerSetAndStartTimer());
     }
 
     private void registerSetAndStartTimer() {
-        String weightStr = etWeight.getText().toString();
-        String repsStr = etReps.getText().toString();
+        String weightStr = etWeight.getText().toString().trim();
+        String repsStr = etReps.getText().toString().trim();
 
+        // Evitar crasheos si le dan al botón sin rellenar los datos
         if (weightStr.isEmpty() || repsStr.isEmpty()) {
             Toast.makeText(this, "Introduce peso y repeticiones", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // 1. Captura de Métricas Temporales
+        // Ojo: parsear a double para admitir decimales en los kilos
         double weight = Double.parseDouble(weightStr);
         int reps = Integer.parseInt(repsStr);
 
-        // 2. Registro Dinámico en Memoria
+        // Instancio la serie y la guardo en el ArrayList
         WorkoutSet newSet = new WorkoutSet(reps, weight);
         sessionData.add(newSet);
 
-        // Actualizar el log visual
+        // Refresco la lista visual
         updateSessionLog();
 
-        // Limpiar campos
+        // Limpio las cajas de texto y quito el foco para la siguiente serie
         etWeight.setText("");
         etReps.setText("");
+        etWeight.clearFocus();
+        etReps.clearFocus();
 
-        // 3. Iniciar CountDownTimer
         startRestTimer();
     }
 
     private void updateSessionLog() {
-        StringBuilder log = new StringBuilder();
-        for (int i = 0; i < sessionData.size(); i++) {
-            log.append("Serie ").append(i + 1).append(": ")
-                    .append(sessionData.get(i).toString()).append("\n");
+        // Aviso al adaptador de que la lista ha cambiado
+        setAdapter.notifyDataSetChanged();
+
+        // Hago scroll automático hacia abajo para ver siempre la última serie insertada
+        if (sessionData.size() > 0) {
+            rvSessionLog.scrollToPosition(sessionData.size() - 1);
         }
-        tvSessionLog.setText(log.toString());
     }
 
     private void startRestTimer() {
+        // Por si acaso, cancelo el timer anterior para evitar superposiciones
         if (restTimer != null) {
             restTimer.cancel();
         }
 
-        // Bloquear botón durante el descanso
+        // Bloqueo interfaz de entrada
         btnRegisterSet.setEnabled(false);
         tvRestIndicator.setVisibility(View.VISIBLE);
 
         restTimer = new CountDownTimer(REST_TIME_MS, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                // Actualizar interfaz en tiempo real
                 long seconds = millisUntilFinished / 1000;
-                String timeFormatted = String.format("00:%02d", seconds);
-                tvTimer.setText(timeFormatted);
+                // Formateo forzado a dos dígitos (ej. 00:08)
+                tvTimer.setText(String.format("00:%02d", seconds));
             }
 
             @Override
             public void onFinish() {
-                // Habilitar siguiente serie
+                // Rehabilitar formulario
                 tvTimer.setText("00:00");
                 tvRestIndicator.setVisibility(View.INVISIBLE);
                 btnRegisterSet.setEnabled(true);
-                Toast.makeText(TrainingActivity.this, "¡Fin del descanso! A por la siguiente serie", Toast.LENGTH_LONG).show();
+                Toast.makeText(TrainingActivity.this, "¡A por la siguiente serie!", Toast.LENGTH_SHORT).show();
             }
         }.start();
     }
@@ -120,6 +135,7 @@ public class TrainingActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        // Matar el timer si el usuario cierra la pantalla de golpe para no generar fugas de memoria
         if (restTimer != null) {
             restTimer.cancel();
         }
